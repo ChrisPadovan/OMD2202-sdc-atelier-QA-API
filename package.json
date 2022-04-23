@@ -1,4 +1,9 @@
 {
+  "name": "qa",
+  "main": "index.js",
+  "scripts": {
+    "start":"npx nodemon server/index.js"
+  },
   "dependencies": {
     "express": "^4.17.3",
     "pg": "^8.7.3",

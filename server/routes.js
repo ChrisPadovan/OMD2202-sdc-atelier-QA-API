@@ -1,5 +1,6 @@
 const Routers = require('express').Router();
 
+
 Routers.get('/questions', getQuestions);
 // Routers.get('/questions/:question_id/answers', getAnswers);
 Routers.post('/questions', postQuestion);
