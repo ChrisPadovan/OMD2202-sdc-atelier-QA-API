@@ -9,9 +9,15 @@ const port = 3000;
 app.use(express.json());
 //app.use('/qa', Routes);
 app.get('/questions', (req, res) => {
-  db.getQuestions().then((results) => {
-    console.log(results.rows)
-    res.send({product_id: 5, 'results': results.rows});
+  db.getQuestions(500).then((results) => {
+    res.send({product_id: 500, 'results': results.rows});
+  })
+})
+
+app.post('/questions/answers', (req, res) => {
+  db.postQuestion(req.body).then(() => {
+    console.log('successful')
+    res.send(200);
   })
 })
 

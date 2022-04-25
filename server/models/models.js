@@ -8,7 +8,7 @@ const pool = new Pool({
   database: 'qa',
 });
 
-function getQuestions() {
+function getQuestions(id) {
   return new Promise((resolve, reject) => {
     pool.query(`SELECT Questions.*,
         json_object_agg(Answers.id,
@@ -16,8 +16,7 @@ function getQuestions() {
           ) as answers
       FROM Questions
       INNER JOIN Answers on Questions.id = Answers.question_id
-      LEFT JOIN AnswerPhotos on AnswerPhotos.answer_id = Answers.id
-      where Questions.product_id = 1
+      where Questions.product_id = ${id}
       group by Questions.id`, (err, res) => {
       if(err) {
         console.log(err);
@@ -29,17 +28,46 @@ function getQuestions() {
 };
 
 
-function postQuestion() {
+function postQuestion(input) {
+  return new Promise((resolve, reject) => {
+    pool.query(`Insert into Questions(product_id,body, date_written, asker_name, asker_email)
+    Values (input.product_id, input.body, input.date, input.name, input.email);`,
+    (err, res) => {
+      if(err) {
+        console.log(err);
+      } else {
+        resolve(res);
+      }
+    });
+  });
+};
 
-}
+function postAnswer(input) {
+  return new Promise((resolve, reject) => {
+    pool.query(`INSERT INTO Answers(question_id, body, date_written, answerer_name, answerer_email)
+    VALUES (input.question_id, input.body, input.date, input.name, input.email);`, (err, res) => {
+      if(err) {
+        console.log(err);
+      } else {
+        resolve(res);
+      }
+    });
+  });
+};
 
-function postAnswer() {
-
-}
-
-function markHelpful() {
-
-}
+function markHelpful(input) {
+  return new Promise((resolve, reject) => {
+    pool.query(`UPDATE Questions
+    SET reported = true
+    WHERE input.id = Questions.id;`, (err, res) => {
+      if(err) {
+        console.log(err);
+      } else {
+        resolve(res);
+      }
+    });
+  });
+};
 
 function reportQuestion() {
 
