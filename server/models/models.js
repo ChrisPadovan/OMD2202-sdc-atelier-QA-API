@@ -58,8 +58,8 @@ function postAnswer(input) {
 function markHelpful(input) {
   return new Promise((resolve, reject) => {
     pool.query(`UPDATE Questions
-    SET reported = true
-    WHERE input.id = Questions.id;`, (err, res) => {
+    SET helpful = helpful + 1
+    WHERE ${input} = Questions.id;`, (err, res) => {
       if(err) {
         console.log(err);
       } else {
@@ -69,12 +69,21 @@ function markHelpful(input) {
   });
 };
 
-function reportQuestion() {
-
+function reportQuestion(input) {
+  return new Promise((resolve, reject) => {
+    pool.query(`UPDATE Questions
+    SET reported = true
+    WHERE ${input} = Questions.id;`, (err, res) => {
+      if(err) {
+        console.log(err);
+      } else {
+        resolve(res);
+      }
+    });
+  });
 }
 
-function markAnswerHelpful() {
-
+function markAnswerHelpful(id) {
 }
 
 function reportAnswer() {

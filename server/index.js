@@ -8,9 +8,9 @@ const port = 3000;
 
 app.use(express.json());
 //app.use('/qa', Routes);
-app.get('/questions', (req, res) => {
-  db.getQuestions(500).then((results) => {
-    res.send({product_id: 500, 'results': results.rows});
+app.get('/questions/:product_id', (req, res) => {
+  db.getQuestions(req.params.product_id).then((results) => {
+    res.send({product_id: req.params.product_id, 'results': results.rows});
   })
 })
 
@@ -20,6 +20,22 @@ app.post('/questions/answers', (req, res) => {
     res.send(200);
   })
 })
+
+app.patch('/questions/:question_id/helpful', (req, res) => {
+  db.markHelpful(req.params.question_id).then((results) => {
+    console.log('successful');
+    res.send(results.rows)
+  })
+});
+
+app.patch('/questions/:question_id/report', (req, res) => {
+  db.reportQuestion(req.params.question_id).then(() => {
+    console.log('successful');
+    res.send(204)
+  })
+})
+
+
 
 app.listen(port, () => {
   console.log(`Listenting on port ${port}`)
