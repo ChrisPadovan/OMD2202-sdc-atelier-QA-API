@@ -1,11 +1,13 @@
 //require('dotenv').config();
 const { Pool } = require('pg');
-const PORT = 3000;
+const PORT = 3001;
 
 const pool = new Pool({
-  user: 'chrispadovan',
-  host: 'localhost',
+  user: 'test_user',
+  host: '54.215.252.151',
   database: 'qa',
+  password: 'testpassword',
+  port: 5432,
 });
 
 function getQuestions(id) {
@@ -26,7 +28,6 @@ function getQuestions(id) {
     });
   });
 };
-
 
 function postQuestion(input) {
   return new Promise((resolve, reject) => {
